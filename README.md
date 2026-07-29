@@ -8,27 +8,25 @@ GitHub.
 
 ## Setup
 
-O deploy é automático: o site é publicado na branch `gh-pages` (o GitHub
-Pages ativa sozinho quando essa branch existe) e o workflow
-`.github/workflows/deploy.yml` a mantém sincronizada a cada push em `main`.
+Nenhum! Tudo é automático e **100% gratuito**:
 
-Só uma coisa precisa ser configurada manualmente — a chave da API da Claude,
-necessária para a descrição automática ao cadastrar ferramentas:
-
-`Settings` → `Secrets and variables` → `Actions` → `New repository secret`
-→ nome `ANTHROPIC_API_KEY` → cole sua chave da
-[console.anthropic.com](https://console.anthropic.com/).
-
-Sem o secret configurado, o cadastro automático por Issue falha (a issue
-recebe um comentário explicando o motivo).
+- O site é publicado na branch `gh-pages` (o GitHub Pages ativa sozinho
+  quando essa branch existe) e o workflow `.github/workflows/deploy.yml`
+  a mantém sincronizada a cada push em `main`.
+- A descrição automática das ferramentas usa o **GitHub Models** — a IA
+  gratuita embutida no GitHub Actions, autenticada pelo próprio
+  `GITHUB_TOKEN`. Sem chave externa, sem cartão, sem custo.
+- Se a IA estiver indisponível (ex.: limite de uso momentâneo), a
+  ferramenta é cadastrada mesmo assim com uma descrição padrão editável.
 
 ## Como cadastrar uma ferramenta nova
 
 1. Vá em `Issues` → `New issue` → template **"Nova ferramenta de IA/Dev"**.
 2. Preencha só **Nome** e **Link**.
-3. Uma GitHub Action roda sozinha: chama a API da Claude para gerar
-   descrição, categoria e se é paga/gratuita/freemium, atualiza
-   `data/tools.json`, comenta o resultado na issue e a fecha automaticamente.
+3. Uma GitHub Action roda sozinha: usa o GitHub Models (gratuito) para
+   gerar descrição, categoria e se é paga/gratuita/freemium, atualiza
+   `data/tools.json`, publica o site, comenta o resultado na issue e a
+   fecha automaticamente.
 
 Ferramentas com o mesmo link já cadastrado são ignoradas (a issue é fechada
 com um aviso de duplicidade).
@@ -45,7 +43,8 @@ com um aviso de duplicidade).
 - `data/tools.json` — catálogo (seed com alguns exemplos; edite/apague à
   vontade).
 - `.github/ISSUE_TEMPLATE/nova-ferramenta.yml` — formulário de cadastro.
-- `.github/workflows/add-tool.yml` — processa a issue e chama a IA.
+- `.github/workflows/add-tool.yml` — processa a issue, chama a IA gratuita
+  do GitHub Models e publica o site.
 - `.github/workflows/deploy.yml` — sincroniza a branch `gh-pages` (GitHub
   Pages) a cada push em `main`.
 - `scripts/generate-tool-entry.mjs` — script Node chamado pelo workflow.
