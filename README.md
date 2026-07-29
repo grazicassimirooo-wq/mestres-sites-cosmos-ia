@@ -49,6 +49,24 @@ com um aviso de duplicidade).
   Pages) a cada push em `main`.
 - `scripts/generate-tool-entry.mjs` — script Node chamado pelo workflow.
 
+## Trocando o mascote por um modelo 3D profissional
+
+O mascote do hero é construído com formas geométricas do three.js. Para usar
+um modelo esculpido (qualidade de "boneco de vinil"), basta subir um arquivo
+chamado `assets/cosmo.glb` neste repositório — o site detecta e troca
+automaticamente, mantendo as animações (flutuação, seguir o mouse, anéis de
+holograma).
+
+Como conseguir um `.glb` de graça:
+1. Gere a partir de uma imagem de referência em um serviço de IA
+   imagem-para-3D com plano gratuito (ex.: Tripo AI, Meshy, Luma Genie), ou
+   baixe um modelo pronto com licença livre no Sketchfab (filtro
+   "Downloadable" + formato glTF/GLB).
+2. Baixe o resultado em formato **GLB**.
+3. No GitHub: `Add file` → `Upload files` → crie a pasta `assets/` e envie o
+   arquivo como `cosmo.glb` → commit na branch `main`.
+4. O deploy roda sozinho e o site passa a exibir o modelo.
+
 ## Rodando localmente
 
 O site busca `data/tools.json` via `fetch`, então precisa ser servido por

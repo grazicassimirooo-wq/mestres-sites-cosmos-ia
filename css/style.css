@@ -269,6 +269,15 @@ a { color: inherit; }
   box-shadow: var(--shadow);
 }
 
+.card-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--accent-soft);
+}
+
 .card h3 { margin: 0; font-size: 1.05rem; }
 
 .card p {
