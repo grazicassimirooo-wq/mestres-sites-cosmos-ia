@@ -46,5 +46,13 @@
     "category": "Design & UI",
     "pricing": "Freemium",
     "description": "Gera componentes e interfaces React/Next.js a partir de descrições em texto ou imagens de referência."
+  },
+  {
+    "id": "hugging-face",
+    "name": "Hugging Face",
+    "link": "https://huggingface.co",
+    "category": "Código & Dev",
+    "pricing": "Freemium",
+    "description": "Hugging Face é uma plataforma que oferece uma ampla gama de modelos de inteligência artificial, especialmente para processamento de linguagem natural. Os usuários podem acessar, treinar e implantar modelos de forma fácil e colaborativa."
   }
 ]
