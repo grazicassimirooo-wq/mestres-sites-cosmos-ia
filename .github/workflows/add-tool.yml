@@ -1,0 +1,81 @@
+name: Adicionar ferramenta via Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  add-tool:
+    if: contains(github.event.issue.labels.*.name, 'nova-ferramenta')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Gerar entrada da ferramenta com IA
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: node scripts/generate-tool-entry.mjs
+
+      - name: Commitar catálogo atualizado
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/tools.json
+          if git diff --cached --quiet; then
+            echo "Nada para commitar"
+          else
+            git commit -m "Adiciona ferramenta via issue #${{ github.event.issue.number }}"
+            git push
+          fi
+
+      - name: Comentar e fechar issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let result;
+            try {
+              result = JSON.parse(fs.readFileSync('/tmp/tool-result.json', 'utf-8'));
+            } catch {
+              result = { success: false, message: 'Não foi possível ler o resultado do processamento.' };
+            }
+
+            const body = result.success
+              ? [
+                  '✅ Ferramenta adicionada automaticamente ao catálogo!',
+                  '',
+                  `**${result.name}**`,
+                  `- Categoria: ${result.category}`,
+                  `- Preço: ${result.pricing}`,
+                  `- Descrição: ${result.description}`,
+                ].join('\n')
+              : `⚠️ Não foi possível cadastrar automaticamente: ${result.message}`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+            if (result.success || result.duplicate) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                state: 'closed',
+              });
+            }

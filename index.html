@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mestres dos Sites Cosmos IA</title>
+<meta name="description" content="Catálogo de ferramentas de dev e IA open source, categorizadas, com preço e link direto — mais um mini portfólio de projetos.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top">
+        <span class="brand-dot"></span>
+        Mestres dos Sites <span class="brand-accent">Cosmos IA</span>
+      </a>
+      <nav class="site-nav">
+        <a href="#catalogo">Catálogo</a>
+        <a href="#portfolio">Portfólio</a>
+        <a id="new-tool-link" href="#" target="_blank" rel="noopener">Cadastrar ferramenta</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Alternar modo claro/escuro">
+          <span class="theme-icon" aria-hidden="true">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Seu cosmos particular de ferramentas de IA e dev</h1>
+        <p>
+          Todas as ferramentas open source e de IA que eu uso, para que servem,
+          como usar e se são pagas ou gratuitas — organizadas por segmento,
+          num só lugar. Arraste a cena ao lado para explorar.
+        </p>
+        <div class="hero-actions">
+          <a href="#catalogo" class="btn btn-primary">Ver catálogo</a>
+          <a id="new-tool-link-hero" href="#" target="_blank" rel="noopener" class="btn btn-ghost">+ Cadastrar ferramenta</a>
+        </div>
+      </div>
+      <div class="hero-scene">
+        <canvas id="cosmos-canvas" aria-label="Cena 3D interativa (arraste para girar)"></canvas>
+      </div>
+    </section>
+
+    <section id="catalogo" class="catalogo">
+      <div class="section-heading">
+        <h2>Catálogo de ferramentas</h2>
+        <p>Filtre por segmento ou busque pelo nome.</p>
+      </div>
+
+      <div class="controls">
+        <input id="search-input" type="search" placeholder="Buscar ferramenta..." aria-label="Buscar ferramenta">
+        <div id="category-filters" class="category-filters" role="group" aria-label="Filtrar por categoria"></div>
+      </div>
+
+      <div id="tools-grid" class="cards-grid" aria-live="polite"></div>
+      <p id="tools-empty" class="empty-state" hidden>Nenhuma ferramenta encontrada com esse filtro.</p>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+      <div class="section-heading">
+        <h2>Meu portfólio</h2>
+        <p>Puxado automaticamente dos meus repositórios públicos no GitHub.</p>
+      </div>
+      <div id="portfolio-grid" class="cards-grid"></div>
+      <p id="portfolio-empty" class="empty-state" hidden>Não foi possível carregar os repositórios agora.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Mestres dos Sites Cosmos IA — feito com three.js, cadastro automático via GitHub Issue + IA.</p>
+  </footer>
+
+  <script>
+    window.COSMOS_CONFIG = {
+      githubUser: "grazicassimirooo-wq",
+      repoUrl: "https://github.com/grazicassimirooo-wq/mestres-sites-cosmos-ia"
+    };
+  </script>
+  <script src="js/theme.js"></script>
+  <script src="js/main.js"></script>
+  <script type="module" src="js/three-bg.js"></script>
+</body>
+</html>

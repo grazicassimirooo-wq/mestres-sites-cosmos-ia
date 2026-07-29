@@ -1,0 +1,50 @@
+[
+  {
+    "id": "claude",
+    "name": "Claude",
+    "link": "https://claude.ai",
+    "category": "Geração de Texto",
+    "pricing": "Freemium",
+    "description": "Assistente de IA da Anthropic para conversas, escrita, análise de documentos e geração de código, com plano gratuito e planos pagos com mais uso e recursos."
+  },
+  {
+    "id": "github-copilot",
+    "name": "GitHub Copilot",
+    "link": "https://github.com/features/copilot",
+    "category": "Código & Dev",
+    "pricing": "Pago",
+    "description": "Assistente de codificação com IA integrado ao editor, sugere linhas e funções inteiras com base no contexto do projeto."
+  },
+  {
+    "id": "cursor",
+    "name": "Cursor",
+    "link": "https://cursor.com",
+    "category": "Código & Dev",
+    "pricing": "Freemium",
+    "description": "Editor de código baseado em IA com chat, edição multi-arquivo e autocompletar avançado. Plano gratuito limitado e planos pagos."
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "link": "https://www.perplexity.ai",
+    "category": "Pesquisa & Dados",
+    "pricing": "Freemium",
+    "description": "Motor de busca com respostas geradas por IA e citação de fontes em tempo real."
+  },
+  {
+    "id": "elevenlabs",
+    "name": "ElevenLabs",
+    "link": "https://elevenlabs.io",
+    "category": "Áudio & Voz",
+    "pricing": "Freemium",
+    "description": "Geração de voz e clonagem de voz realista por IA, com API e plano gratuito com limite de caracteres."
+  },
+  {
+    "id": "vercel-v0",
+    "name": "v0",
+    "link": "https://v0.app",
+    "category": "Design & UI",
+    "pricing": "Freemium",
+    "description": "Gera componentes e interfaces React/Next.js a partir de descrições em texto ou imagens de referência."
+  }
+]
