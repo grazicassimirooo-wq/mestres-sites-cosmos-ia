@@ -6,21 +6,18 @@ Inclui uma cena 3D interativa (three.js + OrbitControls), modo claro/escuro,
 e um mini portfólio puxado automaticamente dos meus repositórios públicos no
 GitHub.
 
-## Setup (passo único, manual)
+## Setup
 
-Duas coisas precisam ser configuradas direto na interface do GitHub — não dá
-para fazer isso via API:
+O deploy é automático: o site é publicado na branch `gh-pages` (o GitHub
+Pages ativa sozinho quando essa branch existe) e o workflow
+`.github/workflows/deploy.yml` a mantém sincronizada a cada push em `main`.
 
-1. **Ativar o GitHub Pages**
-   `Settings` → `Pages` → em "Build and deployment", `Source` = **GitHub
-   Actions**. O workflow `.github/workflows/deploy.yml` já publica o site a
-   cada push em `main`.
+Só uma coisa precisa ser configurada manualmente — a chave da API da Claude,
+necessária para a descrição automática ao cadastrar ferramentas:
 
-2. **Cadastrar a chave da API da Claude** (necessária para a descrição
-   automática ao cadastrar ferramentas)
-   `Settings` → `Secrets and variables` → `Actions` → `New repository secret`
-   → nome `ANTHROPIC_API_KEY` → cole sua chave da
-   [console.anthropic.com](https://console.anthropic.com/).
+`Settings` → `Secrets and variables` → `Actions` → `New repository secret`
+→ nome `ANTHROPIC_API_KEY` → cole sua chave da
+[console.anthropic.com](https://console.anthropic.com/).
 
 Sem o secret configurado, o cadastro automático por Issue falha (a issue
 recebe um comentário explicando o motivo).
@@ -49,7 +46,8 @@ com um aviso de duplicidade).
   vontade).
 - `.github/ISSUE_TEMPLATE/nova-ferramenta.yml` — formulário de cadastro.
 - `.github/workflows/add-tool.yml` — processa a issue e chama a IA.
-- `.github/workflows/deploy.yml` — publica no GitHub Pages a cada push.
+- `.github/workflows/deploy.yml` — sincroniza a branch `gh-pages` (GitHub
+  Pages) a cada push em `main`.
 - `scripts/generate-tool-entry.mjs` — script Node chamado pelo workflow.
 
 ## Rodando localmente
