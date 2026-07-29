@@ -115,9 +115,16 @@
       grid.innerHTML = "";
       visible.forEach((repo) => {
         const link = repo.homepage || repo.html_url;
+        // Miniatura: screenshot real do site quando há homepage; senão, o
+        // cartão social do repositório gerado pelo próprio GitHub.
+        const ogImage = `https://opengraph.githubassets.com/1/${user}/${repo.name}`;
+        const thumb = repo.homepage
+          ? `https://s0.wp.com/mshots/v1/${encodeURIComponent(repo.homepage)}?w=640`
+          : ogImage;
         const card = document.createElement("article");
         card.className = "card";
         card.innerHTML = `
+          <img class="card-thumb" src="${escapeAttr(thumb)}" alt="Prévia de ${escapeHtml(repo.name)}" loading="lazy">
           <h3>${escapeHtml(repo.name)}</h3>
           <p>${escapeHtml(repo.description || "Sem descrição.")}</p>
           <div class="badge-row">
@@ -126,6 +133,10 @@
           </div>
           <a class="card-link" href="${escapeAttr(link)}" target="_blank" rel="noopener noreferrer">Ver projeto →</a>
         `;
+        const img = card.querySelector(".card-thumb");
+        img.addEventListener("error", () => {
+          if (img.src !== ogImage) img.src = ogImage;
+        });
         grid.appendChild(card);
       });
     } catch (err) {
