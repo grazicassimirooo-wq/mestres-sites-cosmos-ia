@@ -189,8 +189,13 @@ if (canvas) {
     try {
       const head = await fetch("assets/cosmo.glb", { method: "HEAD" });
       if (!head.ok) return;
-      const { GLTFLoader } = await import("three/addons/loaders/GLTFLoader.js");
-      const gltf = await new GLTFLoader().loadAsync("assets/cosmo.glb");
+      const [{ GLTFLoader }, { MeshoptDecoder }] = await Promise.all([
+        import("three/addons/loaders/GLTFLoader.js"),
+        import("three/addons/libs/meshopt_decoder.module.js"),
+      ]);
+      const loader = new GLTFLoader();
+      loader.setMeshoptDecoder(MeshoptDecoder);
+      const gltf = await loader.loadAsync("assets/cosmo.glb");
       const loaded = gltf.scene;
 
       // Centraliza e redimensiona para ~2.3 de altura
