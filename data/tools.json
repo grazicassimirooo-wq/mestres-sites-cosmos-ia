@@ -54,5 +54,13 @@
     "category": "Código & Dev",
     "pricing": "Freemium",
     "description": "Hugging Face é uma plataforma que oferece uma ampla gama de modelos de inteligência artificial, especialmente para processamento de linguagem natural. Os usuários podem acessar, treinar e implantar modelos de forma fácil e colaborativa."
+  },
+  {
+    "id": "notebooklm",
+    "name": "Notebooklm",
+    "link": "https://notebooklm.google.com/?utm_source=app_launcher&utm_medium=referral&authuser=0",
+    "category": "Código & Dev",
+    "pricing": "Grátis",
+    "description": "O NotebookLM é uma ferramenta que permite criar e gerenciar notebooks interativos com o auxílio de inteligência artificial. Ele é utilizado para anotações, organização de ideias e execução de códigos de forma colaborativa."
   }
 ]
