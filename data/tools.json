@@ -62,5 +62,13 @@
     "category": "Código & Dev",
     "pricing": "Grátis",
     "description": "O NotebookLM é uma ferramenta que permite criar e gerenciar notebooks interativos com o auxílio de inteligência artificial. Ele é utilizado para anotações, organização de ideias e execução de códigos de forma colaborativa."
+  },
+  {
+    "id": "dali",
+    "name": "Dali",
+    "link": "https://cafe-dali.lovable.app",
+    "category": "Geração de Imagem",
+    "pricing": "Freemium",
+    "description": "Dali é uma ferramenta de inteligência artificial que gera imagens a partir de descrições textuais. Basta inserir uma ideia ou conceito, e Dali cria uma imagem correspondente de forma rápida e eficiente."
   }
 ]
