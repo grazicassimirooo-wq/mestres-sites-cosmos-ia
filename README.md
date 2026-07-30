@@ -31,23 +31,57 @@ Nenhum! Tudo é automático e **100% gratuito**:
 Ferramentas com o mesmo link já cadastrado são ignoradas (a issue é fechada
 com um aviso de duplicidade).
 
+## Como cadastrar um projeto seu que não está no GitHub
+
+O mini-portfólio busca automaticamente os repositórios públicos do GitHub,
+mas nem todo projeto seu tem um repo (ex.: sites feitos noutra ferramenta,
+protótipos, trabalhos de cliente). Para esses:
+
+1. Vá em `Issues` → `New issue` → template **"Meu projeto (não está no
+   GitHub)"**.
+2. Preencha o **Nome**; **Link**, **Imagem** e **Descrição** são opcionais.
+   - **Imagem**: cole o link de uma captura de tela, logo ou foto. Uma forma
+     gratuita de conseguir esse link é arrastar o arquivo de imagem para a
+     própria caixa de texto da issue no GitHub — ele faz o upload e gera a
+     URL sozinho.
+   - Sem imagem, o site gera uma miniatura automática (screenshot do link,
+     se houver, ou um cartão com as iniciais do nome).
+   - Sem descrição, a IA gratuita do GitHub Models tenta gerar uma (se
+     houver link); caso contrário, fica um texto padrão editável.
+3. A GitHub Action processa a issue, atualiza `data/portfolio-extra.json`,
+   publica o site, comenta o resultado e fecha a issue.
+
+Esses projetos aparecem no portfólio antes dos repositórios puxados do
+GitHub.
+
 ## Estrutura
 
 - `index.html`, `css/style.css` — layout, modo claro/escuro (`data-theme` +
   `prefers-color-scheme`).
 - `js/theme.js` — alterna e persiste o tema no `localStorage`.
-- `js/main.js` — carrega `data/tools.json`, filtros por categoria/busca, e
-  busca o portfólio via `https://api.github.com/users/<usuário>/repos`.
+- `js/main.js` — carrega `data/tools.json`, filtros por categoria/busca,
+  alternância grade/lista, e monta o portfólio a partir de
+  `data/portfolio-extra.json` + `https://api.github.com/users/<usuário>/repos`.
 - `js/three-bg.js` — cena 3D (three.js + `OrbitControls`) no hero, via
   import map apontando para o CDN unpkg (sem dependência local).
 - `data/tools.json` — catálogo (seed com alguns exemplos; edite/apague à
   vontade).
-- `.github/ISSUE_TEMPLATE/nova-ferramenta.yml` — formulário de cadastro.
-- `.github/workflows/add-tool.yml` — processa a issue, chama a IA gratuita
-  do GitHub Models e publica o site.
+- `data/portfolio-extra.json` — projetos do portfólio que não têm
+  repositório no GitHub (nome, link, imagem e descrição opcionais).
+- `.github/ISSUE_TEMPLATE/nova-ferramenta.yml` — formulário de cadastro de
+  ferramenta.
+- `.github/ISSUE_TEMPLATE/meu-projeto.yml` — formulário de cadastro de
+  projeto sem repositório no GitHub.
+- `.github/workflows/add-tool.yml` — processa a issue de ferramenta, chama
+  a IA gratuita do GitHub Models e publica o site.
+- `.github/workflows/add-project.yml` — processa a issue de projeto e
+  publica o site.
 - `.github/workflows/deploy.yml` — sincroniza a branch `gh-pages` (GitHub
   Pages) a cada push em `main`.
-- `scripts/generate-tool-entry.mjs` — script Node chamado pelo workflow.
+- `scripts/generate-tool-entry.mjs` — script Node chamado pelo workflow de
+  ferramentas.
+- `scripts/generate-project-entry.mjs` — script Node chamado pelo workflow
+  de projetos.
 
 ## Trocando o mascote por um modelo 3D profissional
 

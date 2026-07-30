@@ -1,0 +1,39 @@
+name: Meu projeto (não está no GitHub)
+description: Cadastra um site/projeto seu no portfólio, mesmo que não tenha um repositório público no GitHub.
+title: "[Meu projeto] "
+labels: ["meu-projeto"]
+body:
+  - type: input
+    id: nome
+    attributes:
+      label: Nome do projeto
+      placeholder: "Ex.: Loja da Vovó"
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link do site (se estiver publicado)
+      placeholder: "https://..."
+    validations:
+      required: false
+  - type: input
+    id: imagem
+    attributes:
+      label: Imagem (URL de uma captura de tela, logo ou foto do projeto)
+      description: >-
+        Cole o link de uma imagem já hospedada (ex.: envie o arquivo para
+        esta mesma issue arrastando-o aqui — o GitHub gera um link — ou use
+        um serviço gratuito de imagens). Se deixar em branco, o site gera
+        uma miniatura automática.
+      placeholder: "https://..."
+    validations:
+      required: false
+  - type: textarea
+    id: descricao
+    attributes:
+      label: Descrição
+      description: Uma ou duas frases sobre o projeto. Se deixar em branco e houver link, a IA gratuita tenta gerar uma.
+      placeholder: "Do que se trata o projeto, pra que serve..."
+    validations:
+      required: false
