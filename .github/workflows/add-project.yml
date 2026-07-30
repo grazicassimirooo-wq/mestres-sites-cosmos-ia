@@ -1,0 +1,94 @@
+name: Adicionar projeto via Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  models: read
+
+jobs:
+  add-project:
+    if: contains(github.event.issue.labels.*.name, 'meu-projeto')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Gerar entrada do projeto (com IA gratuita para descrição, se necessário)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: node scripts/generate-project-entry.mjs
+
+      - name: Commitar portfólio atualizado
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/portfolio-extra.json
+          if git diff --cached --quiet; then
+            echo "Nada para commitar"
+          else
+            git commit -m "Adiciona projeto via issue #${{ github.event.issue.number }}"
+            git push
+          fi
+
+      - name: Publicar site atualizado (gh-pages)
+        if: success()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          exclude_assets: ".github,scripts"
+
+      - name: Comentar e fechar issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let result;
+            try {
+              result = JSON.parse(fs.readFileSync('/tmp/project-result.json', 'utf-8'));
+            } catch {
+              result = { success: false, message: 'Não foi possível ler o resultado do processamento.' };
+            }
+
+            const lines = result.success
+              ? [
+                  '✅ Projeto adicionado automaticamente ao portfólio!',
+                  '',
+                  `**${result.name}**`,
+                  result.link ? `- Link: ${result.link}` : '- Sem link público informado',
+                  result.image ? `- Imagem: ${result.image}` : '- Sem imagem informada (miniatura automática)',
+                  `- Descrição: ${result.description}`,
+                ]
+              : [`⚠️ Não foi possível cadastrar automaticamente: ${result.message}`];
+
+            if (result.success && result.warning) {
+              lines.push('', `ℹ️ ${result.warning}`);
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: lines.join('\n'),
+            });
+
+            if (result.success || result.duplicate) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                state: 'closed',
+              });
+            }

@@ -399,6 +399,17 @@ a { color: inherit; }
   background: var(--accent-soft);
 }
 
+.card-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+}
+
 .card h3 { margin: 0; font-size: 1.05rem; }
 
 .card p {
