@@ -419,7 +419,7 @@ a { color: inherit; }
 .footer-flag span:nth-child(3) { background: #c05aa8; }
 .footer-flag span:nth-child(4) { background: #b3116d; }
 
-.catalogo, .portfolio {
+.catalogo {
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 24px 40px;
@@ -538,8 +538,6 @@ a { color: inherit; }
 }
 
 #tools-grid.list-view .card-link {
-  flex: 0 0 auto;
-  align-self: center;
   white-space: nowrap;
 }
 
@@ -602,26 +600,6 @@ a { color: inherit; }
   }
 }
 
-.card-thumb {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--accent-soft);
-}
-
-.card-thumb-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.6rem;
-  letter-spacing: 0.04em;
-}
-
 .card h3 { margin: 0; font-size: 1.05rem; }
 
 .card p {
@@ -650,8 +628,15 @@ a { color: inherit; }
 .badge-pricing-pago { background: var(--warning-soft); color: var(--warning); }
 .badge-pricing-freemium { background: var(--accent-soft); color: var(--accent-strong); }
 
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+
 .card-link {
-  align-self: flex-start;
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--accent-strong);
@@ -659,6 +644,42 @@ a { color: inherit; }
 }
 
 .card-link:hover { text-decoration: underline; }
+
+.card-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.card-delete:hover,
+.card-delete:focus-visible {
+  color: #b3116d;
+  background: color-mix(in srgb, #b3116d 12%, transparent);
+  border-color: color-mix(in srgb, #b3116d 40%, transparent);
+  outline: none;
+}
+
+:root[data-theme="dark"] .card-delete:hover,
+:root[data-theme="dark"] .card-delete:focus-visible {
+  color: #ff9ec7;
+  background: color-mix(in srgb, #ff5aa1 18%, transparent);
+  border-color: color-mix(in srgb, #ff5aa1 50%, transparent);
+}
+
+#tools-grid.list-view .card-actions {
+  flex: 0 0 auto;
+  align-self: center;
+  gap: 10px;
+}
 
 .empty-state {
   color: var(--text-muted);

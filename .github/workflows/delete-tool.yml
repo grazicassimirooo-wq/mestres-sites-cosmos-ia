@@ -1,4 +1,4 @@
-name: Adicionar projeto via Issue
+name: Excluir ferramenta via Issue
 
 on:
   issues:
@@ -7,11 +7,10 @@ on:
 permissions:
   contents: write
   issues: write
-  models: read
 
 jobs:
-  add-project:
-    if: contains(github.event.issue.labels.*.name, 'meu-projeto')
+  delete-tool:
+    if: contains(github.event.issue.labels.*.name, 'excluir-ferramenta')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,22 +21,21 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Gerar entrada do projeto (com IA gratuita para descrição, se necessário)
+      - name: Remover ferramenta do catálogo
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_BODY: ${{ github.event.issue.body }}
-        run: node scripts/generate-project-entry.mjs
+        run: node scripts/delete-tool-entry.mjs
 
-      - name: Commitar portfólio atualizado
+      - name: Commitar catálogo atualizado
         if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/portfolio-extra.json
+          git add data/tools.json
           if git diff --cached --quiet; then
             echo "Nada para commitar"
           else
-            git commit -m "Adiciona projeto via issue #${{ github.event.issue.number }}"
+            git commit -m "Remove ferramenta via issue #${{ github.event.issue.number }}"
             git push
           fi
 
@@ -57,25 +55,19 @@ jobs:
             const fs = require('fs');
             let result;
             try {
-              result = JSON.parse(fs.readFileSync('/tmp/project-result.json', 'utf-8'));
+              result = JSON.parse(fs.readFileSync('/tmp/tool-result.json', 'utf-8'));
             } catch {
               result = { success: false, message: 'Não foi possível ler o resultado do processamento.' };
             }
 
             const lines = result.success
               ? [
-                  '✅ Projeto adicionado automaticamente ao portfólio!',
+                  '🗑️ Ferramenta removida do catálogo!',
                   '',
                   `**${result.name}**`,
-                  result.link ? `- Link: ${result.link}` : '- Sem link público informado',
-                  result.image ? `- Imagem: ${result.image}` : '- Sem imagem informada (miniatura automática)',
-                  `- Descrição: ${result.description}`,
+                  `- Link: ${result.link}`,
                 ]
-              : [`⚠️ Não foi possível cadastrar automaticamente: ${result.message}`];
-
-            if (result.success && result.warning) {
-              lines.push('', `ℹ️ ${result.warning}`);
-            }
+              : [`⚠️ Não foi possível excluir automaticamente: ${result.message}`];
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -84,7 +76,7 @@ jobs:
               body: lines.join('\n'),
             });
 
-            if (result.success || result.duplicate) {
+            if (result.success || result.notFound) {
               await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
