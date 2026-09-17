@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mestres dos Sites Cosmos IA</title>
-<meta name="description" content="Catálogo de ferramentas de dev e IA open source, categorizadas, com preço e link direto — mais um mini portfólio de projetos.">
+<meta name="description" content="Catálogo de ferramentas de dev e IA open source, categorizadas, com preço e link direto.">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,7 +41,6 @@
         <a href="#sobre">Sobre</a>
         <a href="#catalogo">Catálogo</a>
         <a href="#jogo">Jogo</a>
-        <a href="#portfolio">Portfólio</a>
         <a id="new-tool-link" href="#" target="_blank" rel="noopener">Cadastrar</a>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Alternar modo claro/escuro">
           <span class="theme-icon" aria-hidden="true">🌙</span>
@@ -53,15 +52,15 @@
   <main id="top">
     <section class="hero">
       <div class="hero-text">
-        <p class="eyebrow">Portfólio + laboratório de IA</p>
-        <h1>Cosmos particular de <em>ferramentas</em>, <em>projetos</em> e experimentos.</h1>
+        <p class="eyebrow">Laboratório de IA</p>
+        <h1>Cosmos particular de <em>ferramentas</em> e experimentos.</h1>
         <p>
-          Um espaço pra mostrar meu trabalho e as ferramentas que eu uso
-          pra construir com IA. Interativo, feito na mão, sem template.
+          Um espaço pra reunir as ferramentas de IA e dev que eu uso pra
+          construir. Interativo, feito na mão, sem template.
           Arraste a cena — o Cosmo segue você.
         </p>
         <div class="hero-actions">
-          <a href="#portfolio" class="btn btn-primary">Ver meus projetos</a>
+          <a href="#catalogo" class="btn btn-primary">Explorar o catálogo</a>
           <a href="#jogo" class="btn btn-ghost">Jogar Cosmos Catcher</a>
         </div>
       </div>
@@ -94,10 +93,9 @@
           <p>
             Sou desenvolvedora, sáfica, e este é o meu cantinho na
             internet — um catálogo vivo das ferramentas de IA e dev que eu
-            uso no dia a dia, o meu portfólio e um mini jogo pra você
-            brincar enquanto explora. Construído do zero, sem plataforma
-            paga, sem servidor e sem chave de API — só HTML, CSS, JS e
-            three.js.
+            uso no dia a dia, com um mini jogo pra você brincar enquanto
+            explora. Construído do zero, sem plataforma paga, sem servidor
+            e sem chave de API — só HTML, CSS, JS e three.js.
           </p>
           <div class="sobre-chips">
             <span class="chip-tag">HTML · CSS · JS</span>
@@ -158,15 +156,6 @@
         <canvas id="jogo-canvas" width="720" height="400" aria-label="Mini jogo Cosmos Catcher"></canvas>
       </div>
     </section>
-
-    <section id="portfolio" class="portfolio">
-      <div class="section-heading">
-        <h2>Meu portfólio</h2>
-        <p>Projetos cadastrados manualmente + repositórios públicos puxados do GitHub.</p>
-      </div>
-      <div id="portfolio-grid" class="cards-grid"></div>
-      <p id="portfolio-empty" class="empty-state" hidden>Não foi possível carregar os repositórios agora.</p>
-    </section>
   </main>
 
   <footer class="site-footer">
@@ -181,7 +170,6 @@
 
   <script>
     window.COSMOS_CONFIG = {
-      githubUser: "grazicassimirooo-wq",
       repoUrl: "https://github.com/grazicassimirooo-wq/mestres-sites-cosmos-ia"
     };
   </script>
