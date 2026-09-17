@@ -32,17 +32,32 @@ com um aviso de duplicidade).
 
 ## Como excluir uma ferramenta do catálogo
 
-Cada card do catálogo tem um botão **Excluir** que abre uma issue já
-pré-preenchida com o nome e o link daquela ferramenta — é só confirmar em
-`Submit new issue`.
+Cada card tem um botão **Excluir** que apaga a ferramenta na hora, sem sair
+do site. Na primeira vez, o site pede um token do GitHub (gratuito, ~2 min,
+uma vez só):
 
-Também dá pra abrir manualmente: `Issues` → `New issue` → template
+1. Abra <https://github.com/settings/personal-access-tokens/new>.
+2. Em **Repository access**, escolha **Only select repositories** e marque
+   `mestres-sites-cosmos-ia`.
+3. Em **Permissions → Repository permissions → Contents**, escolha
+   **Read and write**.
+4. **Generate token**, copie e cole no site.
+
+A partir daí, clicar em Excluir grava direto em `data/tools.json` pela API
+do GitHub, a ferramenta some do catálogo imediatamente e o `deploy.yml`
+republica o site em ~1 minuto.
+
+O token fica salvo apenas no `localStorage` do seu navegador — nunca vai
+pro repositório. Ele dá acesso de escrita a este repositório, então, se
+outra pessoa usa o mesmo computador, use o link **"Remover token salvo"**
+dentro do modal quando terminar.
+
+### Alternativa sem token
+
+O caminho por issue continua funcionando: `Issues` → `New issue` → template
 **"Excluir ferramenta do catálogo"**. Preencha o **Link** (mais confiável)
-ou o **Nome**.
-
-A GitHub Action remove a entrada de `data/tools.json`, republica o site,
-comenta o resultado na issue e a fecha automaticamente. Também é gratuito
-e sem chave externa.
+ou o **Nome**, e a Action `delete-tool.yml` remove a entrada, republica o
+site e fecha a issue. Útil num computador onde você não quer salvar token.
 
 ## Estrutura
 
@@ -50,7 +65,8 @@ e sem chave externa.
   `prefers-color-scheme`).
 - `js/theme.js` — alterna e persiste o tema no `localStorage`.
 - `js/main.js` — carrega `data/tools.json`, filtros por categoria/busca,
-  alternância grade/lista e botão de excluir de cada ferramenta.
+  alternância grade/lista e a exclusão direta pela API do GitHub (com o
+  modal que guarda o token no `localStorage`).
 - `js/three-bg.js` — cena 3D (three.js + `OrbitControls`) no hero, via
   import map apontando para o CDN unpkg (sem dependência local).
 - `data/tools.json` — catálogo (seed com alguns exemplos; edite/apague à
