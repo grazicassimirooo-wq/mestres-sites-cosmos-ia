@@ -10,7 +10,12 @@ permissions:
 
 jobs:
   delete-tool:
-    if: contains(github.event.issue.labels.*.name, 'excluir-ferramenta')
+    # Também casa pelo título: o GitHub descarta silenciosamente um label do
+    # template que ainda não exista no repositório, e sem essa segunda
+    # condição a issue nasceria sem label e o job seria pulado.
+    if: >-
+      contains(github.event.issue.labels.*.name, 'excluir-ferramenta')
+      || startsWith(github.event.issue.title, '[Excluir ferramenta]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

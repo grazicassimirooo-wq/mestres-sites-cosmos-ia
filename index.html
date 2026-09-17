@@ -158,6 +158,41 @@
     </section>
   </main>
 
+  <dialog id="token-dialog" class="token-dialog" aria-labelledby="token-dialog-title">
+    <form method="dialog" class="token-form">
+      <h2 id="token-dialog-title">Conectar ao GitHub</h2>
+      <p class="token-intro">
+        Pra excluir uma ferramenta na hora, o site precisa de um token do
+        GitHub — é gratuito e leva ~2 minutos. Você faz isso só uma vez.
+      </p>
+      <ol class="token-steps">
+        <li>
+          Abra
+          <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">criar token</a>
+          (abre em outra aba).
+        </li>
+        <li>Em <strong>Repository access</strong>, escolha <strong>Only select repositories</strong> e marque <strong>mestres-sites-cosmos-ia</strong>.</li>
+        <li>Em <strong>Permissions → Repository permissions → Contents</strong>, escolha <strong>Read and write</strong>.</li>
+        <li>Clique em <strong>Generate token</strong>, copie o código e cole aqui embaixo.</li>
+      </ol>
+      <label class="token-label" for="token-input">Token</label>
+      <input id="token-input" class="token-input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">
+      <p id="token-error" class="token-error" hidden></p>
+      <p class="token-warning">
+        O token fica salvo só no seu navegador. Se outra pessoa usar este
+        computador, ela conseguiria editar este repositório — em caso de
+        dúvida, remova o token depois de usar.
+      </p>
+      <div class="token-actions">
+        <button type="button" id="token-cancel" class="btn btn-ghost">Cancelar</button>
+        <button type="button" id="token-save" class="btn btn-primary">Salvar token</button>
+      </div>
+      <button type="button" id="token-forget" class="token-forget" hidden>Remover token salvo</button>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
   <footer class="site-footer">
     <div class="footer-flag" aria-hidden="true">
       <span></span><span></span><span></span><span></span>
@@ -170,7 +205,10 @@
 
   <script>
     window.COSMOS_CONFIG = {
-      repoUrl: "https://github.com/grazicassimirooo-wq/mestres-sites-cosmos-ia"
+      repoUrl: "https://github.com/grazicassimirooo-wq/mestres-sites-cosmos-ia",
+      repoOwner: "grazicassimirooo-wq",
+      repoName: "mestres-sites-cosmos-ia",
+      repoBranch: "main"
     };
   </script>
   <script src="js/theme.js"></script>
