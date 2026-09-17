@@ -70,5 +70,13 @@
     "category": "Geração de Imagem",
     "pricing": "Freemium",
     "description": "Dali é uma ferramenta de inteligência artificial que gera imagens a partir de descrições textuais. Basta inserir uma ideia ou conceito, e Dali cria uma imagem correspondente de forma rápida e eficiente."
+  },
+  {
+    "id": "chatgpt",
+    "name": "Chatgpt",
+    "link": "https://chatgpt.com/",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
