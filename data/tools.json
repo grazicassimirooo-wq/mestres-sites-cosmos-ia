@@ -110,5 +110,13 @@
     "category": "Outros",
     "pricing": "Freemium",
     "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+  },
+  {
+    "id": "dreamina",
+    "name": "Dreamina",
+    "link": "https://dreamina.capcut.com/pt-br/?utm_medium=sem&utm_source=googleadwords_int&utm_campaign=agent&utm_content=web&pid=513641&campaign_id=23479241912&adset_id=192206832935&ad_id=793504961415&keyword=agente%20de%20ia%20gratuito&matchtype=b&channel=g&placement=&target=kwd-2407678659831&gad_source=1&gad_campaignid=23479241912&gbraid=0AAAAACROvhm-e9CjqHIWTpXXKiKtwmE3U&gclid=CjwKCAjwn67VBhBnEiwAXUIN1Yi7mUqGZXWOSTTZlZRgcVRmYbyC237uNwljSHlGJMScA35nUT3izRoCoQ4QAvD_BwE",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
