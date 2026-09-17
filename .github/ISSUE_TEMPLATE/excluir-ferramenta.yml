@@ -1,0 +1,29 @@
+name: Excluir ferramenta do catálogo
+description: Remove uma ferramenta já cadastrada (pelo link ou pelo nome).
+title: "[Excluir ferramenta] "
+labels: ["excluir-ferramenta"]
+body:
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: Link exato da ferramenta a excluir (mais confiável). Se não souber, preencha só o nome.
+      placeholder: "https://..."
+    validations:
+      required: false
+  - type: input
+    id: nome
+    attributes:
+      label: Nome da ferramenta
+      description: Usado se o link não bater com nenhuma entrada.
+      placeholder: "Ex.: Claude"
+    validations:
+      required: false
+  - type: textarea
+    id: motivo
+    attributes:
+      label: Motivo (opcional)
+      description: Só pra você lembrar depois — pode deixar em branco.
+      placeholder: "Não uso mais / duplicado / etc."
+    validations:
+      required: false

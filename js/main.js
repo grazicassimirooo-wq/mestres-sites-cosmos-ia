@@ -4,6 +4,17 @@
     ? `${config.repoUrl}/issues/new?template=nova-ferramenta.yml`
     : "#";
 
+  function deleteToolUrl(tool) {
+    if (!config.repoUrl) return "#";
+    const params = new URLSearchParams({
+      template: "excluir-ferramenta.yml",
+      title: `[Excluir ferramenta] ${tool.name}`,
+      link: tool.link || "",
+      motivo: "",
+    });
+    return `${config.repoUrl}/issues/new?${params.toString()}`;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#new-tool-link, #new-tool-link-hero").forEach((el) => {
       el.href = newToolUrl;
@@ -11,7 +22,6 @@
 
     initViewToggle();
     initCatalogo();
-    initPortfolio();
   });
 
   const supportsHoverTilt = window.matchMedia("(hover: hover) and (pointer: fine)").matches
@@ -128,7 +138,19 @@
             <span class="badge badge-category">${escapeHtml(tool.category || "Outros")}</span>
             <span class="badge ${pricingClass(tool.pricing)}">${escapeHtml(tool.pricing || "")}</span>
           </div>
-          <a class="card-link" href="${escapeAttr(tool.link)}" target="_blank" rel="noopener noreferrer">Acessar site →</a>
+          <div class="card-actions">
+            <a class="card-link" href="${escapeAttr(tool.link)}" target="_blank" rel="noopener noreferrer">Acessar site →</a>
+            <a class="card-delete" href="${escapeAttr(deleteToolUrl(tool))}" target="_blank" rel="noopener noreferrer" title="Excluir esta ferramenta do catálogo" aria-label="Excluir ${escapeAttr(tool.name)} do catálogo">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+                <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              <span>Excluir</span>
+            </a>
+          </div>
         `;
         grid.appendChild(card);
         attachTilt(card);
@@ -142,109 +164,6 @@
 
     renderFilters();
     renderCards();
-  }
-
-  function initials(name) {
-    const parts = String(name).trim().split(/\s+/).filter(Boolean);
-    if (parts.length === 0) return "?";
-    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-    return (parts[0][0] + parts[1][0]).toUpperCase();
-  }
-
-  async function loadManualProjects() {
-    try {
-      const res = await fetch("data/portfolio-extra.json", { cache: "no-store" });
-      const projects = await res.json();
-      return projects.map((project) => ({
-        name: project.name,
-        description: project.description || "Sem descrição.",
-        link: project.link || "",
-        thumb: project.image || (project.link ? `https://s0.wp.com/mshots/v1/${encodeURIComponent(project.link)}?w=640` : ""),
-        fallbackThumb: "",
-        badge: "Meu projeto",
-        stars: null,
-      }));
-    } catch {
-      return [];
-    }
-  }
-
-  async function loadGithubRepos(user) {
-    if (!user) return [];
-    try {
-      const res = await fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=100`);
-      if (!res.ok) throw new Error("GitHub API error");
-      const repos = await res.json();
-      return repos
-        .filter((repo) => !repo.fork && !repo.private)
-        .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
-        .map((repo) => {
-          const ogImage = `https://opengraph.githubassets.com/1/${user}/${repo.name}`;
-          return {
-            name: repo.name,
-            description: repo.description || "Sem descrição.",
-            link: repo.homepage || repo.html_url,
-            // Miniatura: screenshot real do site quando há homepage; senão, o
-            // cartão social do repositório gerado pelo próprio GitHub.
-            thumb: repo.homepage ? `https://s0.wp.com/mshots/v1/${encodeURIComponent(repo.homepage)}?w=640` : ogImage,
-            fallbackThumb: ogImage,
-            badge: repo.language || null,
-            stars: repo.stargazers_count,
-          };
-        });
-    } catch {
-      return [];
-    }
-  }
-
-  async function initPortfolio() {
-    const grid = document.getElementById("portfolio-grid");
-    const emptyState = document.getElementById("portfolio-empty");
-
-    // Projetos cadastrados manualmente (sem repositório no GitHub) aparecem
-    // primeiro; depois, os repositórios públicos puxados automaticamente.
-    const [manualItems, repoItems] = await Promise.all([
-      loadManualProjects(),
-      loadGithubRepos(config.githubUser),
-    ]);
-    const items = [...manualItems, ...repoItems];
-
-    if (items.length === 0) {
-      emptyState.hidden = false;
-      return;
-    }
-
-    grid.innerHTML = "";
-    items.forEach((item, index) => {
-      const card = document.createElement("article");
-      card.className = "card";
-      card.style.setProperty("--card-delay", `${Math.min(index, 10) * 40}ms`);
-
-      const thumbHtml = item.thumb
-        ? `<img class="card-thumb" src="${escapeAttr(item.thumb)}" alt="Prévia de ${escapeHtml(item.name)}" loading="lazy">`
-        : `<div class="card-thumb card-thumb-placeholder" aria-hidden="true">${escapeHtml(initials(item.name))}</div>`;
-
-      card.innerHTML = `
-        ${thumbHtml}
-        <h3>${escapeHtml(item.name)}</h3>
-        <p>${escapeHtml(item.description)}</p>
-        <div class="badge-row">
-          ${item.badge ? `<span class="badge badge-category">${escapeHtml(item.badge)}</span>` : ""}
-          ${item.stars !== null && item.stars !== undefined ? `<span class="badge badge-pricing-gratis">★ ${item.stars}</span>` : ""}
-        </div>
-        ${item.link ? `<a class="card-link" href="${escapeAttr(item.link)}" target="_blank" rel="noopener noreferrer">Ver projeto →</a>` : ""}
-      `;
-
-      const img = card.querySelector(".card-thumb");
-      if (img && img.tagName === "IMG" && item.fallbackThumb) {
-        img.addEventListener("error", () => {
-          if (img.src !== item.fallbackThumb) img.src = item.fallbackThumb;
-        });
-      }
-
-      grid.appendChild(card);
-      attachTilt(card);
-    });
   }
 
   function escapeHtml(value) {
