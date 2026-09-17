@@ -86,5 +86,13 @@
     "category": "Outros",
     "pricing": "Freemium",
     "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+  },
+  {
+    "id": "flow-videos",
+    "name": "Flow - videos",
+    "link": "https://flow.google.com/",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
