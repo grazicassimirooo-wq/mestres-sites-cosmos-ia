@@ -94,5 +94,13 @@
     "category": "Outros",
     "pricing": "Freemium",
     "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+  },
+  {
+    "id": "lovable",
+    "name": "Lovable",
+    "link": "https://lovable.dev/",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
