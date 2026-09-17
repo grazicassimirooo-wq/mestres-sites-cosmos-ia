@@ -9,10 +9,20 @@
     const params = new URLSearchParams({
       template: "excluir-ferramenta.yml",
       title: `[Excluir ferramenta] ${tool.name}`,
-      link: tool.link || "",
-      motivo: "",
     });
+    if (tool.link) params.set("link", tool.link);
     return `${config.repoUrl}/issues/new?${params.toString()}`;
+  }
+
+  function handleDeleteClick(event, tool) {
+    const message =
+      `Excluir "${tool.name}" do catálogo?\n\n` +
+      `Isso vai abrir uma aba no GitHub com o formulário já preenchido.\n` +
+      `Clique em "Submit new issue" lá — em ~1 minuto a ferramenta é removida ` +
+      `automaticamente e o site republica sozinho.`;
+    if (!window.confirm(message)) {
+      event.preventDefault();
+    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -152,6 +162,10 @@
             </a>
           </div>
         `;
+        const deleteLink = card.querySelector(".card-delete");
+        if (deleteLink) {
+          deleteLink.addEventListener("click", (event) => handleDeleteClick(event, tool));
+        }
         grid.appendChild(card);
         attachTilt(card);
       });
