@@ -78,5 +78,13 @@
     "category": "Outros",
     "pricing": "Freemium",
     "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+  },
+  {
+    "id": "manus-ia",
+    "name": "Manus ia",
+    "link": "https://manus.im/app",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
