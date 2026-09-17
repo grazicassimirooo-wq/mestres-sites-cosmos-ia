@@ -118,5 +118,13 @@
     "category": "Outros",
     "pricing": "Freemium",
     "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+  },
+  {
+    "id": "pippit",
+    "name": "Pippit",
+    "link": "https://www.pippit.ai/pt-br?utm_medium=sem&utm_source=googleadwords_int&utm_campaign=video&pid=573081&af_c_id=23734280371&adset_id=196654086602&ad_id=804123841672&placement=&keyword=ai+video+generator&targetid=kwd-1071206118930&matchtype=p&gad_source=1&gad_campaignid=23734280371&gbraid=0AAAAACROvhkPi2IUg9u36n2QVVoAuJZu4&gclid=CjwKCAjwn67VBhBnEiwAXUIN1c5OJkqoo4k-SJi1jv3PpYAvkC2AKW6YbTKYrOii2AThnEYa2lxObxoCtyYQAvD_BwE",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
