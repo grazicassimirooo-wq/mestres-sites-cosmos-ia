@@ -126,5 +126,13 @@
     "category": "Outros",
     "pricing": "Freemium",
     "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+  },
+  {
+    "id": "napkin-transforma-o-seu-texto-em-visuais-para-que-partilhar-as-suas-ideias-seja-rapido-e-eficaz",
+    "name": "Napkin transforma o seu texto em visuais para que partilhar as suas ideias seja rápido e eficaz.",
+    "link": "https://www.napkin.ai/pt/",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
