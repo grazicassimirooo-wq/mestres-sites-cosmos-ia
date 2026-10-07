@@ -134,5 +134,13 @@
     "category": "Outros",
     "pricing": "Freemium",
     "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+  },
+  {
+    "id": "teams",
+    "name": "teams",
+    "link": "https://teams.cloud.microsoft/",
+    "category": "Outros",
+    "pricing": "Freemium",
+    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
   }
 ]
