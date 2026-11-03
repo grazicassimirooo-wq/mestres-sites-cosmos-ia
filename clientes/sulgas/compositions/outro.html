@@ -1,0 +1,24 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Poppins", sans-serif; color: var(--ink, #0f1b33); }
+    #ou-wrap { position: absolute; left: 192px; top: 330px; width: 1536px; text-align: center; }
+    #ou-title { font-size: 120px; line-height: 1.08; font-weight: 700; letter-spacing: -0.03em; }
+    #ou-title .hl { color: var(--accent, #4f46e5); }
+    #ou-sub { margin-top: 28px; font-size: 40px; color: #475569; }
+    #ou-btn { display: inline-block; margin-top: 64px; padding: 28px 64px; border-radius: 999px; font-size: 44px; font-weight: 600; color: #fff;
+      background: linear-gradient(90deg,var(--accent, #4f46e5),var(--accent2, #14b8a6)); box-shadow: 0 18px 50px color-mix(in srgb, var(--accent, #4f46e5) 35%, transparent); }
+  </style>
+  <div data-hf-id="hf-x7nm" id="root" data-composition-id="outro" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-yy5d" id="ou-wrap" class="clip" data-start="0" data-duration="4" data-track-index="0">
+      <h1 data-hf-id="hf-r1ru" id="ou-title">Pronto para<br data-hf-id="hf-x5px"/><span data-hf-id="hf-5lzb" class="hl">encantar clientes?</span></h1>
+      <div data-hf-id="hf-v6fd" id="ou-btn">Fale com seu mentor →</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#ou-title", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6, ease: "power4.out" }, 0);
+    tl.fromTo("#ou-btn", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, 0.5);
+    tl.fromTo("#ou-btn", { scale: 1 }, { scale: 1.05, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 1.4);
+    window.__timelines["outro"] = tl;
+  </script>
+</template>
