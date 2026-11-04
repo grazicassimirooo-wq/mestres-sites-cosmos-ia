@@ -150,5 +150,93 @@
     "category": "Geração de Texto",
     "pricing": "Freemium",
     "description": "Assistente de IA da Alibaba para conversar, escrever, programar e analisar arquivos, com uso gratuito."
+  },
+  {
+    "id": "vidogrid",
+    "name": "Vidogrid",
+    "link": "https://vidogrid.ai/",
+    "category": "Vídeo",
+    "pricing": "Freemium",
+    "description": "Plataforma de geração de vídeo com IA que cria clipes a partir de texto ou imagens, com plano gratuito limitado."
+  },
+  {
+    "id": "pruna-p-video-workflows",
+    "name": "Pruna P-Video Workflows",
+    "link": "https://demo.pruna.ai/p-video-workflows",
+    "category": "Vídeo",
+    "pricing": "Grátis",
+    "description": "Demo da Pruna para montar fluxos de geração de vídeo com IA direto no navegador, útil para testar o modelo sem instalar nada."
+  },
+  {
+    "id": "pavo-ai",
+    "name": "Pavo AI",
+    "link": "https://app.pavo-ai.work/",
+    "category": "Produtividade",
+    "pricing": "Freemium",
+    "description": "Aplicativo de IA para criar conteúdo e automatizar tarefas de marketing e produção criativa, com plano gratuito para testar."
+  },
+  {
+    "id": "ai-video-maker",
+    "name": "AI Video Maker",
+    "link": "https://aivideomaker.ai/ai-video-generator",
+    "category": "Vídeo",
+    "pricing": "Freemium",
+    "description": "Gerador de vídeos com IA: descreva a cena em texto e receba um vídeo pronto, com opção gratuita e planos pagos."
+  },
+  {
+    "id": "raphael",
+    "name": "Raphael",
+    "link": "https://raphael.app/",
+    "category": "Geração de Imagem",
+    "pricing": "Freemium",
+    "description": "Gerador de imagens com IA que transforma descrições em arte, com uso gratuito limitado e planos com mais créditos."
+  },
+  {
+    "id": "loremotion",
+    "name": "LoreMotion",
+    "link": "https://loremotion.com/",
+    "category": "Vídeo",
+    "pricing": "Freemium",
+    "description": "Ferramenta de IA para criar vídeos e animações a partir de histórias e textos, com plano gratuito para experimentar."
+  },
+  {
+    "id": "zsky-ai",
+    "name": "ZSky AI",
+    "link": "https://zsky.ai/?ref=7B6F3576D9BF",
+    "category": "Geração de Imagem",
+    "pricing": "Freemium",
+    "description": "Plataforma de IA para gerar imagens e vídeos a partir de prompts, com créditos gratuitos para começar."
+  },
+  {
+    "id": "vibes",
+    "name": "Vibes",
+    "link": "https://vibes.ai/",
+    "category": "Vídeo",
+    "pricing": "Grátis",
+    "description": "Feed de vídeos curtos gerados por IA em que você cria, remixa e compartilha clipes a partir de prompts."
+  },
+  {
+    "id": "vheer",
+    "name": "Vheer",
+    "link": "https://vheer.com/",
+    "category": "Geração de Imagem",
+    "pricing": "Grátis",
+    "description": "Gerador de imagens com IA de uso gratuito, que cria arte a partir de texto direto no navegador."
+  },
+  {
+    "id": "theres-an-ai-for-that",
+    "name": "There's An AI For That",
+    "link": "https://theresanaiforthat.com/?via=jornada",
+    "category": "Pesquisa & Dados",
+    "pricing": "Freemium",
+    "description": "Diretório gigante de ferramentas de IA, organizado por tarefa, para descobrir qual IA resolve o que você precisa."
+  },
+  {
+    "id": "snapgen",
+    "name": "SnapGen",
+    "link": "https://snapgen.ai/",
+    "category": "Geração de Imagem",
+    "pricing": "Freemium",
+    "description": "Ferramenta de IA para gerar e editar imagens a partir de texto, com plano gratuito e opções pagas."
   }
 ]
