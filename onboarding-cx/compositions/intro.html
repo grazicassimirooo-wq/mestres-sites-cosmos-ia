@@ -1,13 +1,13 @@
 <template>
   <style>
-    #root { position: absolute; inset: 0; font-family: "Poppins", sans-serif; color: #0f1b33; }
+    #root { position: absolute; inset: 0; font-family: "Poppins", sans-serif; color: var(--ink, #0f1b33); }
     #intro-wrap { position: absolute; left: 192px; top: 300px; width: 1536px; }
-    #intro-pill { display: inline-block; padding: 12px 28px; border-radius: 999px; background: #fff; color: #4f46e5;
-      font-weight: 600; font-size: 28px; letter-spacing: 0.08em; box-shadow: 0 6px 24px rgba(79,70,229,.15); }
+    #intro-pill { display: inline-block; padding: 12px 28px; border-radius: 999px; background: #fff; color: var(--accent, #4f46e5);
+      font-weight: 600; font-size: 28px; letter-spacing: 0.08em; box-shadow: 0 6px 24px color-mix(in srgb, var(--accent, #4f46e5) 15%, transparent); }
     #intro-title { margin-top: 36px; font-size: 140px; line-height: 1.05; font-weight: 700; letter-spacing: -0.03em; }
     #intro-title .w { display: inline-block; margin-right: 0.22em; }
-    #intro-title .hl { color: #4f46e5; }
-    #intro-bar { margin-top: 40px; width: 220px; height: 10px; border-radius: 5px; background: linear-gradient(90deg,#4f46e5,#14b8a6); transform-origin: left center; }
+    #intro-title .hl { color: var(--accent, #4f46e5); }
+    #intro-bar { margin-top: 40px; width: 220px; height: 10px; border-radius: 5px; background: linear-gradient(90deg,var(--accent, #4f46e5),var(--accent2, #14b8a6)); transform-origin: left center; }
     #intro-sub { margin-top: 28px; font-size: 40px; font-weight: 400; color: #475569; }
   </style>
   <div data-hf-id="hf-ypfn" id="root" data-composition-id="intro" data-width="1920" data-height="1080">

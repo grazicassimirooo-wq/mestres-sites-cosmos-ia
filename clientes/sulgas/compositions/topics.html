@@ -1,0 +1,55 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Poppins", sans-serif; color: var(--ink, #0f1b33); }
+    #tp-progress { position: absolute; left: 192px; top: 120px; width: 1536px; display: flex; gap: 20px; }
+    .tp-seg { flex: 1; height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--ink, #0f1b33) 12%, transparent); position: relative; }
+    .tp-fill { position: absolute; inset: 0; border-radius: 4px; background: linear-gradient(90deg,var(--accent, #4f46e5),var(--accent2, #14b8a6)); transform-origin: left center; }
+    .tp-card { position: absolute; left: 192px; top: 230px; width: 1536px; height: 520px; display: flex; align-items: center; justify-content: center; gap: 80px; }
+    .tp-icon { width: 340px; height: 340px; border-radius: 80px; background: #fff; box-shadow: 0 20px 60px color-mix(in srgb, var(--accent, #4f46e5) 18%, transparent);
+      display: flex; align-items: center; justify-content: center; flex: none; }
+    .tp-icon svg { width: 180px; height: 180px; }
+    .tp-num { font-size: 36px; font-weight: 600; color: var(--accent, #4f46e5); letter-spacing: 0.1em; }
+    .tp-title { margin-top: 12px; font-size: 112px; line-height: 1.05; font-weight: 700; letter-spacing: -0.03em; }
+  </style>
+  <div data-hf-id="hf-tyyn" id="root" data-composition-id="topics" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-2ven" id="tp-progress">
+      <div data-hf-id="hf-ur1c" class="tp-seg"><div data-hf-id="hf-2oa2" class="tp-fill" id="tp-f1"></div></div>
+      <div data-hf-id="hf-4j88" class="tp-seg"><div data-hf-id="hf-yq61" class="tp-fill" id="tp-f2"></div></div>
+      <div data-hf-id="hf-3cb5" class="tp-seg"><div data-hf-id="hf-xyi8" class="tp-fill" id="tp-f3"></div></div>
+    </div>
+
+    <div data-hf-id="hf-vpsp" id="tp-c1" class="tp-card clip" data-start="0" data-duration="2.5" data-track-index="0">
+      <div data-hf-id="hf-sfqr" class="tp-icon" id="tp-i1">
+        <svg data-hf-id="hf-rbr2" viewBox="0 0 24 24" fill="none" stroke="var(--accent, #4f46e5)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle data-hf-id="hf-jnj3" cx="12" cy="8" r="4"/><path data-hf-id="hf-la7t" d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      </div>
+      <div data-hf-id="hf-yeow"><div data-hf-id="hf-tns2" class="tp-num" id="tp-n1">01</div><div data-hf-id="hf-5nwp" class="tp-title" id="tp-t1">Conheça o<br data-hf-id="hf-x5px"/>cliente</div></div>
+    </div>
+
+    <div data-hf-id="hf-20zz" id="tp-c2" class="tp-card clip" data-start="2.5" data-duration="2.5" data-track-index="0">
+      <div data-hf-id="hf-hk94" class="tp-icon" id="tp-i2">
+        <svg data-hf-id="hf-nti4" viewBox="0 0 24 24" fill="none" stroke="var(--accent2, #14b8a6)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-fet3" d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>
+      </div>
+      <div data-hf-id="hf-y7yw"><div data-hf-id="hf-rsu2" class="tp-num" id="tp-n2" style="color:var(--accent2-dark, #0f766e)">02</div><div data-hf-id="hf-i5oc" class="tp-title" id="tp-t2">Resolva com<br data-hf-id="hf-rsrt"/>empatia</div></div>
+    </div>
+
+    <div data-hf-id="hf-76mu" id="tp-c3" class="tp-card clip" data-start="5" data-duration="2.5" data-track-index="0">
+      <div data-hf-id="hf-ibwx" class="tp-icon" id="tp-i3">
+        <svg data-hf-id="hf-o9ia" viewBox="0 0 24 24" fill="none" stroke="var(--accent, #4f46e5)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-7gx8" d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>
+      </div>
+      <div data-hf-id="hf-x11t"><div data-hf-id="hf-5h2y" class="tp-num" id="tp-n3">03</div><div data-hf-id="hf-b06k" class="tp-title" id="tp-t3">Meça e<br data-hf-id="hf-szow"/>melhore</div></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const starts = [0, 2.5, 5];
+    starts.forEach((s, i) => {
+      const k = i + 1;
+      tl.fromTo("#tp-f" + k, { scaleX: 0 }, { scaleX: 1, duration: 2.2, ease: "none" }, s);
+      tl.fromTo("#tp-i" + k, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(1.6)" }, s + 0.05);
+      tl.fromTo("#tp-n" + k, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, s + 0.25);
+      tl.fromTo("#tp-t" + k, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: "power4.out" }, s + 0.3);
+      tl.fromTo("#tp-c" + k + " .tp-icon, #tp-c" + k + " > div:last-child", { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power2.in" }, s + 2.2);
+    });
+    window.__timelines["topics"] = tl;
+  </script>
+</template>
