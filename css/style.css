@@ -845,3 +845,10 @@ a { color: inherit; }
   .hero { grid-template-columns: 1fr; }
   .hero-scene { order: -1; aspect-ratio: 16 / 10; }
 }
+
+.hero-fallback {
+  margin: 0;
+  padding: 2rem 1rem;
+  text-align: center;
+  opacity: 0.75;
+}

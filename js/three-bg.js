@@ -2,7 +2,24 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const canvas = document.getElementById("cosmos-canvas");
-if (canvas) {
+
+function webglAvailable() {
+  try {
+    const probe = document.createElement("canvas");
+    return !!(probe.getContext("webgl2") || probe.getContext("webgl"));
+  } catch {
+    return false;
+  }
+}
+
+if (canvas && !webglAvailable()) {
+  canvas.parentElement.classList.add("no-webgl");
+  canvas.hidden = true;
+  const note = document.createElement("p");
+  note.className = "hero-fallback";
+  note.textContent = "Seu navegador não conseguiu abrir a cena 3D do Cosmo.";
+  canvas.parentElement.appendChild(note);
+} else if (canvas) {
   const container = canvas.parentElement;
 
   const scene = new THREE.Scene();
@@ -187,8 +204,6 @@ if (canvas) {
   let model = null;
   (async () => {
     try {
-      const head = await fetch("assets/cosmo.glb", { method: "HEAD" });
-      if (!head.ok) return;
       const [{ GLTFLoader }, { MeshoptDecoder }] = await Promise.all([
         import("three/addons/loaders/GLTFLoader.js"),
         import("three/addons/libs/meshopt_decoder.module.js"),
@@ -283,10 +298,19 @@ if (canvas) {
   resize();
   window.addEventListener("resize", resize);
 
+  let onScreen = true;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      onScreen = entries[0].isIntersecting;
+    }).observe(canvas);
+  }
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const startTime = performance.now();
   function animate() {
     requestAnimationFrame(animate);
-    const t = (performance.now() - startTime) / 1000;
+    if (!onScreen || document.hidden) return;
+    const t = reduceMotion ? 0 : (performance.now() - startTime) / 1000;
 
     // Flutuação suave (personagem geométrica ou modelo .glb)
     const actor = model || chara;

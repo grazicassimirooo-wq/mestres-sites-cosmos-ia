@@ -13,7 +13,12 @@
   const H = canvas.height;
 
   const STORAGE_KEY = "cosmos-catcher-best";
-  let best = Number(localStorage.getItem(STORAGE_KEY) || 0);
+  let best = 0;
+  try {
+    best = Number(localStorage.getItem(STORAGE_KEY) || 0) || 0;
+  } catch {
+    /* storage bloqueado: recorde vale só nesta visita */
+  }
   bestEl.textContent = best;
 
   // Paleta da bandeira sáfica — o jogo herda a identidade visual do site.
@@ -52,12 +57,13 @@
 
   function spawnEntity() {
     const isCrystal = Math.random() < 0.62;
+    const speedUp = 1 + Math.min(0.6, state.score * 0.002);
     state.entities.push({
       type: isCrystal ? "crystal" : "meteor",
       x: Math.random() * (W - 40) + 20,
       y: -20,
       r: isCrystal ? 10 : 14,
-      vy: isCrystal ? 110 + Math.random() * 60 : 140 + Math.random() * 90,
+      vy: (isCrystal ? 110 + Math.random() * 60 : 140 + Math.random() * 90) * speedUp,
       rot: 0,
       spin: (Math.random() - 0.5) * 3,
     });
@@ -252,7 +258,11 @@
             state.running = false;
             if (state.score > best) {
               best = state.score;
-              localStorage.setItem(STORAGE_KEY, String(best));
+              try {
+                localStorage.setItem(STORAGE_KEY, String(best));
+              } catch {
+                /* idem */
+              }
               bestEl.textContent = best;
             }
             startBtn.textContent = "Jogar de novo";
@@ -290,7 +300,19 @@
     }
   }
 
+  let visible = true;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+    }).observe(canvas);
+  }
+
   function loop(ts) {
+    if (!visible || document.hidden) {
+      state.lastTs = ts;
+      requestAnimationFrame(loop);
+      return;
+    }
     const dt = Math.min(0.05, (ts - state.lastTs) / 1000 || 0);
     state.lastTs = ts;
     update(dt);
@@ -299,14 +321,20 @@
   }
 
   // Controles
+  const isLeft = (k) => k === "ArrowLeft" || k === "a" || k === "A";
+  const isRight = (k) => k === "ArrowRight" || k === "d" || k === "D";
   window.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft" || e.key === "a") state.keys.left = true;
-    if (e.key === "ArrowRight" || e.key === "d") state.keys.right = true;
-    if (state.running && (e.key.startsWith("Arrow"))) e.preventDefault();
+    if (isLeft(e.key)) state.keys.left = true;
+    if (isRight(e.key)) state.keys.right = true;
+    if (state.running && e.key.startsWith("Arrow")) e.preventDefault();
   });
   window.addEventListener("keyup", (e) => {
-    if (e.key === "ArrowLeft" || e.key === "a") state.keys.left = false;
-    if (e.key === "ArrowRight" || e.key === "d") state.keys.right = false;
+    if (isLeft(e.key)) state.keys.left = false;
+    if (isRight(e.key)) state.keys.right = false;
+  });
+  window.addEventListener("blur", () => {
+    state.keys.left = false;
+    state.keys.right = false;
   });
 
   function setShipFromClientX(clientX) {
