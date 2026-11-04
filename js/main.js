@@ -56,6 +56,9 @@
       },
     });
 
+    if (response.status === 403 && response.headers.get("x-ratelimit-remaining") === "0") {
+      throw new Error("Limite de requisições do GitHub atingido. Tente de novo em alguns minutos.");
+    }
     if (response.status === 401 || response.status === 403) {
       const error = new Error("Token inválido ou sem permissão de escrita.");
       error.badToken = true;
@@ -226,10 +229,20 @@
       listBtn.classList.toggle("active", view === "list");
       gridBtn.setAttribute("aria-pressed", String(view === "grid"));
       listBtn.setAttribute("aria-pressed", String(view === "list"));
-      localStorage.setItem("cosmos-view", view);
+      try {
+        localStorage.setItem("cosmos-view", view);
+      } catch {
+        /* storage bloqueado: a preferência vale só nesta visita */
+      }
     }
 
-    applyView(localStorage.getItem("cosmos-view") === "list" ? "list" : "grid");
+    let savedView = "grid";
+    try {
+      savedView = localStorage.getItem("cosmos-view") === "list" ? "list" : "grid";
+    } catch {
+      /* idem */
+    }
+    applyView(savedView);
     gridBtn.addEventListener("click", () => applyView("grid"));
     listBtn.addEventListener("click", () => applyView("list"));
   }
@@ -258,11 +271,13 @@
       return;
     }
 
-    const categories = ["Todas", ...new Set(tools.map((t) => t.category).filter(Boolean))];
+    const getCategories = () => ["Todas", ...new Set(tools.map((t) => t.category).filter(Boolean))];
     let activeCategory = "Todas";
     let query = "";
 
     function renderFilters() {
+      const categories = getCategories();
+      if (!categories.includes(activeCategory)) activeCategory = "Todas";
       filtersEl.innerHTML = "";
       categories.forEach((category) => {
         const btn = document.createElement("button");
@@ -281,7 +296,8 @@
     function renderCards() {
       const filtered = tools.filter((tool) => {
         const matchesCategory = activeCategory === "Todas" || tool.category === activeCategory;
-        const matchesQuery = tool.name.toLowerCase().includes(query.toLowerCase());
+        const matchesQuery = !query
+          || fold(`${tool.name} ${tool.description || ""}`).includes(fold(query));
         return matchesCategory && matchesQuery;
       });
 
@@ -322,7 +338,10 @@
 
     async function handleDelete(tool, button) {
       if (!window.confirm(`Excluir "${tool.name}" do catálogo?`)) return;
+      await runDelete(tool, button);
+    }
 
+    async function runDelete(tool, button) {
       if (!readToken() && !(await askForToken())) return;
 
       button.disabled = true;
@@ -331,6 +350,7 @@
       try {
         await deleteToolFromRepo(tool);
         tools = tools.filter((entry) => !sameTool(entry, tool));
+        renderFilters();
         renderCards();
         showToast(`"${tool.name}" foi removida. O site republica em ~1 min.`, "ok");
       } catch (error) {
@@ -340,7 +360,7 @@
         if (error.badToken) {
           forgetToken();
           showToast("Token inválido ou sem permissão. Cadastre de novo.", "erro");
-          if (await askForToken()) handleDelete(tool, button);
+          if (await askForToken()) await runDelete(tool, button);
           return;
         }
         showToast(`Não deu pra excluir: ${error.message}`, "erro");
@@ -354,6 +374,13 @@
 
     renderFilters();
     renderCards();
+  }
+
+  function fold(value) {
+    return String(value ?? "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
   }
 
   function escapeHtml(value) {

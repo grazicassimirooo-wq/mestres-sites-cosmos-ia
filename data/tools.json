@@ -51,17 +51,17 @@
     "id": "hugging-face",
     "name": "Hugging Face",
     "link": "https://huggingface.co",
-    "category": "Código & Dev",
+    "category": "Pesquisa & Dados",
     "pricing": "Freemium",
     "description": "Hugging Face é uma plataforma que oferece uma ampla gama de modelos de inteligência artificial, especialmente para processamento de linguagem natural. Os usuários podem acessar, treinar e implantar modelos de forma fácil e colaborativa."
   },
   {
     "id": "notebooklm",
-    "name": "Notebooklm",
-    "link": "https://notebooklm.google.com/?utm_source=app_launcher&utm_medium=referral&authuser=0",
-    "category": "Código & Dev",
+    "name": "NotebookLM",
+    "link": "https://notebooklm.google.com/",
+    "category": "Pesquisa & Dados",
     "pricing": "Grátis",
-    "description": "O NotebookLM é uma ferramenta que permite criar e gerenciar notebooks interativos com o auxílio de inteligência artificial. Ele é utilizado para anotações, organização de ideias e execução de códigos de forma colaborativa."
+    "description": "Ferramenta do Google que usa IA para resumir e conversar com seus documentos, criar notas e gerar resumos em áudio."
   },
   {
     "id": "dali",
@@ -73,82 +73,82 @@
   },
   {
     "id": "chatgpt",
-    "name": "Chatgpt",
+    "name": "ChatGPT",
     "link": "https://chatgpt.com/",
-    "category": "Outros",
+    "category": "Geração de Texto",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Assistente de IA da OpenAI para conversar, escrever, resumir, analisar arquivos e gerar código, com plano gratuito e planos pagos."
   },
   {
     "id": "manus-ia",
-    "name": "Manus ia",
+    "name": "Manus IA",
     "link": "https://manus.im/app",
-    "category": "Outros",
+    "category": "Produtividade",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Agente de IA autônomo que executa tarefas de várias etapas, como pesquisa, análise e criação de sites, a partir de um pedido em texto."
   },
   {
     "id": "flow-videos",
-    "name": "Flow - videos",
+    "name": "Flow (vídeos)",
     "link": "https://flow.google.com/",
-    "category": "Outros",
+    "category": "Vídeo",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Ferramenta do Google para criar vídeos e cenas cinematográficas com IA a partir de texto e imagens."
   },
   {
     "id": "lovable",
     "name": "Lovable",
     "link": "https://lovable.dev/",
-    "category": "Outros",
+    "category": "Código & Dev",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Construtor de apps e sites com IA: descreva a ideia em texto e ele gera o código, com prévia ao vivo e publicação."
   },
   {
     "id": "gemini",
     "name": "Gemini",
     "link": "https://gemini.google.com/",
-    "category": "Outros",
+    "category": "Geração de Texto",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Assistente de IA do Google para conversar, pesquisar, escrever e analisar textos, imagens e arquivos."
   },
   {
     "id": "dreamina",
     "name": "Dreamina",
-    "link": "https://dreamina.capcut.com/pt-br/?utm_medium=sem&utm_source=googleadwords_int&utm_campaign=agent&utm_content=web&pid=513641&campaign_id=23479241912&adset_id=192206832935&ad_id=793504961415&keyword=agente%20de%20ia%20gratuito&matchtype=b&channel=g&placement=&target=kwd-2407678659831&gad_source=1&gad_campaignid=23479241912&gbraid=0AAAAACROvhm-e9CjqHIWTpXXKiKtwmE3U&gclid=CjwKCAjwn67VBhBnEiwAXUIN1Yi7mUqGZXWOSTTZlZRgcVRmYbyC237uNwljSHlGJMScA35nUT3izRoCoQ4QAvD_BwE",
-    "category": "Outros",
+    "link": "https://dreamina.capcut.com/pt-br/",
+    "category": "Vídeo",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Plataforma da CapCut para gerar imagens e vídeos com IA a partir de descrições em texto."
   },
   {
     "id": "pippit",
     "name": "Pippit",
-    "link": "https://www.pippit.ai/pt-br?utm_medium=sem&utm_source=googleadwords_int&utm_campaign=video&pid=573081&af_c_id=23734280371&adset_id=196654086602&ad_id=804123841672&placement=&keyword=ai+video+generator&targetid=kwd-1071206118930&matchtype=p&gad_source=1&gad_campaignid=23734280371&gbraid=0AAAAACROvhkPi2IUg9u36n2QVVoAuJZu4&gclid=CjwKCAjwn67VBhBnEiwAXUIN1c5OJkqoo4k-SJi1jv3PpYAvkC2AKW6YbTKYrOii2AThnEYa2lxObxoCtyYQAvD_BwE",
-    "category": "Outros",
+    "link": "https://www.pippit.ai/pt-br",
+    "category": "Vídeo",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Gerador de vídeos com IA para criar anúncios e conteúdos curtos para redes sociais a partir de texto ou links de produtos."
   },
   {
-    "id": "napkin-transforma-o-seu-texto-em-visuais-para-que-partilhar-as-suas-ideias-seja-rapido-e-eficaz",
-    "name": "Napkin transforma o seu texto em visuais para que partilhar as suas ideias seja rápido e eficaz.",
+    "id": "napkin",
+    "name": "Napkin",
     "link": "https://www.napkin.ai/pt/",
-    "category": "Outros",
+    "category": "Design & UI",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Transforma texto em diagramas e visuais para compartilhar ideias de forma rápida e clara."
   },
   {
     "id": "teams",
-    "name": "teams",
+    "name": "Microsoft Teams",
     "link": "https://teams.cloud.microsoft/",
-    "category": "Outros",
+    "category": "Produtividade",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Plataforma da Microsoft para chat, reuniões em vídeo e colaboração em equipe, com recursos de IA integrados."
   },
   {
     "id": "qwen",
     "name": "Qwen",
     "link": "https://chat.qwen.ai/",
-    "category": "Outros",
+    "category": "Geração de Texto",
     "pricing": "Freemium",
-    "description": "Ferramenta cadastrada automaticamente. Edite este texto em data/tools.json para descrever para que serve."
+    "description": "Assistente de IA da Alibaba para conversar, escrever, programar e analisar arquivos, com uso gratuito."
   }
 ]
