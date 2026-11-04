@@ -223,12 +223,25 @@
       <input id="t-category" class="token-input field-text" name="category" maxlength="60">
       <label class="token-label" for="t-pricing">Preço</label>
       <input id="t-pricing" class="token-input field-text" name="pricing" maxlength="40" placeholder="Grátis, Freemium ou Pago">
+      <label class="token-label" for="t-video">Vídeo do YouTube (opcional)</label>
+      <input id="t-video" class="token-input field-text" name="video" type="url" placeholder="https://www.youtube.com/watch?v=...">
+      <label class="token-label" for="t-videoCaption">Legenda do vídeo (uma leve descrição)</label>
+      <textarea id="t-videoCaption" class="token-input field-text" name="videoCaption" rows="2" maxlength="280" placeholder="Ex.: Passo a passo de como criar o primeiro vídeo na plataforma."></textarea>
       <p class="token-error" data-edit-error hidden></p>
       <div class="token-actions">
         <button type="button" class="btn btn-ghost" data-edit-cancel>Cancelar</button>
         <button type="submit" class="btn btn-primary">Salvar</button>
       </div>
     </form>
+  </dialog>
+
+  <dialog id="video-dialog" class="video-dialog" aria-labelledby="video-title">
+    <div class="video-box">
+      <button type="button" class="video-close" id="video-close" aria-label="Fechar vídeo">×</button>
+      <h2 id="video-title" class="video-title"></h2>
+      <div class="video-frame" id="video-frame"></div>
+      <p class="video-caption" id="video-caption"></p>
+    </div>
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
