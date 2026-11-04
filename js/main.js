@@ -6,6 +6,7 @@
 
   const TOKEN_KEY = "cosmos-gh-token";
   const DATA_PATH = "data/tools.json";
+  const SITE_PATH = "data/site.json";
 
   function readToken() {
     try {
@@ -79,28 +80,121 @@
     return normalizeLink(a.link) === normalizeLink(b.link);
   }
 
-  // Lê tools.json pela API, remove a entrada e grava de volta. O push na main
-  // dispara o deploy.yml, que republica a gh-pages sozinho.
-  async function deleteToolFromRepo(tool) {
-    const contentsPath = `/repos/${config.repoOwner}/${config.repoName}/contents/${DATA_PATH}`;
+  // Lê um JSON do repo pela API, aplica `mutate` e grava de volta. O push na
+  // main dispara o deploy.yml, que republica a gh-pages sozinho.
+  async function updateRepoJson(dataPath, mutate, message) {
+    const contentsPath = `/repos/${config.repoOwner}/${config.repoName}/contents/${dataPath}`;
     const branch = config.repoBranch || "main";
 
     const file = await githubApi(`${contentsPath}?ref=${encodeURIComponent(branch)}`);
     const current = JSON.parse(decodeBase64(file.content));
-    const next = current.filter((entry) => !sameTool(entry, tool));
-
-    if (next.length === current.length) {
-      throw new Error("Essa ferramenta já não está mais no catálogo.");
-    }
+    const next = mutate(current);
 
     await githubApi(contentsPath, {
       method: "PUT",
       body: JSON.stringify({
-        message: `Remove ${tool.name} do catálogo`,
+        message,
         content: encodeBase64(`${JSON.stringify(next, null, 2)}\n`),
         sha: file.sha,
         branch,
       }),
+    });
+  }
+
+  function deleteToolFromRepo(tool) {
+    return updateRepoJson(DATA_PATH, (current) => {
+      const next = current.filter((entry) => !sameTool(entry, tool));
+      if (next.length === current.length) {
+        throw new Error("Essa ferramenta já não está mais no catálogo.");
+      }
+      return next;
+    }, `Remove ${tool.name} do catálogo`);
+  }
+
+  function editToolInRepo(tool, values) {
+    return updateRepoJson(DATA_PATH, (current) => {
+      let found = false;
+      const next = current.map((entry) => {
+        if (!sameTool(entry, tool)) return entry;
+        found = true;
+        return { ...entry, ...values };
+      });
+      if (!found) throw new Error("Essa ferramenta não está mais no catálogo.");
+      return next;
+    }, `Edita ${tool.name} no catálogo`);
+  }
+
+  function saveSiteTextsToRepo(values) {
+    return updateRepoJson(SITE_PATH, (current) => ({ ...current, ...values }), "Edita textos do site");
+  }
+
+  // Garante token, executa a ação e, se o token for rejeitado, pede de novo.
+  async function withToken(action) {
+    if (!readToken() && !(await askForToken())) return false;
+    try {
+      await action();
+      return true;
+    } catch (error) {
+      if (!error.badToken) throw error;
+      forgetToken();
+      showToast("Token inválido ou sem permissão. Cadastre de novo.", "erro");
+      if (!(await askForToken())) return false;
+      await action();
+      return true;
+    }
+  }
+
+  // Abre um <dialog> com formulário, preenche os campos e devolve os valores
+  // (ou null se cancelar). `onSubmit` pode lançar erro — fica no formulário.
+  function openEditDialog(dialog, values, onSubmit) {
+    const form = dialog.querySelector("[data-edit-form]");
+    const errorEl = dialog.querySelector("[data-edit-error]");
+    const cancelBtn = dialog.querySelector("[data-edit-cancel]");
+    const submitBtn = form.querySelector("[type=submit]");
+
+    Array.from(form.elements).forEach((el) => {
+      if (el.name && el.name in values) el.value = values[el.name] ?? "";
+    });
+    errorEl.hidden = true;
+
+    return new Promise((resolve) => {
+      let busy = false;
+      function cleanup(result) {
+        form.removeEventListener("submit", onFormSubmit);
+        cancelBtn.removeEventListener("click", onCancel);
+        dialog.removeEventListener("close", onClose);
+        if (dialog.open) dialog.close();
+        resolve(result);
+      }
+      function onCancel() { if (!busy) cleanup(null); }
+      function onClose() { if (!busy) cleanup(null); }
+      async function onFormSubmit(event) {
+        event.preventDefault();
+        if (busy) return;
+        const data = {};
+        Array.from(form.elements).forEach((el) => {
+          if (el.name) data[el.name] = String(el.value).trim();
+        });
+        busy = true;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Salvando...";
+        try {
+          await onSubmit(data);
+          busy = false;
+          cleanup(data);
+        } catch (error) {
+          busy = false;
+          errorEl.textContent = `Não deu pra salvar: ${error.message}`;
+          errorEl.hidden = false;
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Salvar";
+        }
+      }
+      form.addEventListener("submit", onFormSubmit);
+      cancelBtn.addEventListener("click", onCancel);
+      dialog.addEventListener("close", onClose);
+      dialog.showModal();
     });
   }
 
@@ -185,8 +279,117 @@
     });
 
     initViewToggle();
+    initSiteTexts();
+    initMotion();
     initCatalogo();
   });
+
+  // ── Textos editáveis do site (hero + sobre) ──────────────────────────
+  let siteTexts = null;
+
+  function setTitle(el, text) {
+    // `*palavra*` vira destaque; cada palavra sobe em sequência (motion).
+    let i = 0;
+    const html = escapeHtml(text)
+      .split(/(\*[^*]+\*)/)
+      .map((part) => {
+        const emphasis = /^\*[^*]+\*$/.test(part);
+        const words = (emphasis ? part.slice(1, -1) : part).split(/(\s+)/);
+        const inner = words
+          .map((w) => (/^\s*$/.test(w) ? w : `<span class="w"><span style="--i:${i++}">${w}</span></span>`))
+          .join("");
+        return emphasis ? `<em>${inner}</em>` : inner;
+      })
+      .join("");
+    el.innerHTML = html;
+  }
+
+  function applySiteTexts(texts) {
+    document.querySelectorAll("[data-site]").forEach((el) => {
+      const value = texts[el.dataset.site];
+      if (typeof value !== "string" || !value) return;
+      if (el.dataset.site === "heroTitle") setTitle(el, value);
+      else el.textContent = value;
+    });
+  }
+
+  async function initSiteTexts() {
+    const heroTitle = document.querySelector('[data-site="heroTitle"]');
+    try {
+      const res = await fetch(`${SITE_PATH}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(String(res.status));
+      siteTexts = await res.json();
+    } catch {
+      siteTexts = null; // mantém o texto padrão que já está no HTML
+    }
+    if (siteTexts) applySiteTexts(siteTexts);
+    else if (heroTitle) setTitle(heroTitle, heroTitle.textContent);
+
+    const btn = document.getElementById("edit-site-btn");
+    const dialog = document.getElementById("site-dialog");
+    if (!btn || !dialog) return;
+    btn.addEventListener("click", async () => {
+      const current = {};
+      document.querySelectorAll("[data-site]").forEach((el) => {
+        current[el.dataset.site] = el.dataset.site === "heroTitle"
+          ? (siteTexts && siteTexts.heroTitle) || el.textContent
+          : el.textContent;
+      });
+      if (!readToken() && !(await askForToken())) return;
+      const saved = await openEditDialog(dialog, current, async (values) => {
+        const ok = await withToken(() => saveSiteTextsToRepo(values));
+        if (!ok) throw new Error("token não informado.");
+      });
+      if (saved) {
+        siteTexts = { ...(siteTexts || {}), ...saved };
+        applySiteTexts(siteTexts);
+        showToast("Textos salvos. O site republica em ~1 min.", "ok");
+      }
+    });
+  }
+
+  // ── Motion: progresso de rolagem, revelações, marquee ─────────────────
+  function initMotion() {
+    const bar = document.querySelector(".scroll-progress");
+    if (bar) {
+      let ticking = false;
+      const update = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = `scaleX(${max > 0 ? Math.min(window.scrollY / max, 1) : 0})`;
+        ticking = false;
+      };
+      window.addEventListener("scroll", () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    }
+
+    const targets = document.querySelectorAll("[data-reveal]");
+    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      targets.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+    document.documentElement.classList.add("js-motion");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    targets.forEach((el) => io.observe(el));
+  }
+
+  function buildMarquee(tools) {
+    const track = document.getElementById("marquee-track");
+    if (!track) return;
+    const names = tools.map((t) => t.name).filter(Boolean);
+    if (!names.length) { track.parentElement.hidden = true; return; }
+    track.parentElement.hidden = false;
+    const row = names.map((n) => `<span>${escapeHtml(n)}</span>`).join("");
+    track.innerHTML = `<div class="marquee-row">${row}</div><div class="marquee-row">${row}</div>`;
+  }
 
   const supportsHoverTilt = window.matchMedia("(hover: hover) and (pointer: fine)").matches
     && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -317,6 +520,10 @@
           </div>
           <div class="card-actions">
             <a class="card-link" href="${escapeAttr(tool.link)}" target="_blank" rel="noopener noreferrer">Acessar site →</a>
+            <button type="button" class="card-edit" title="Editar esta ferramenta" aria-label="Editar ${escapeAttr(tool.name)}">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+              <span>Editar</span>
+            </button>
             <button type="button" class="card-delete" title="Excluir esta ferramenta do catálogo" aria-label="Excluir ${escapeAttr(tool.name)} do catálogo">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -329,11 +536,30 @@
             </button>
           </div>
         `;
+        card.querySelector(".card-edit").addEventListener("click", () => handleEdit(tool));
         const deleteBtn = card.querySelector(".card-delete");
         deleteBtn.addEventListener("click", () => handleDelete(tool, deleteBtn));
         grid.appendChild(card);
         attachTilt(card);
       });
+    }
+
+    async function handleEdit(tool) {
+      const dialog = document.getElementById("tool-dialog");
+      if (!dialog) return;
+      if (!readToken() && !(await askForToken())) return;
+      const saved = await openEditDialog(dialog, tool, async (values) => {
+        if (!values.name || !values.link) throw new Error("nome e link são obrigatórios.");
+        const ok = await withToken(() => editToolInRepo(tool, values));
+        if (!ok) throw new Error("token não informado.");
+      });
+      if (!saved) return;
+      const index = tools.findIndex((entry) => sameTool(entry, tool));
+      if (index >= 0) tools[index] = { ...tools[index], ...saved };
+      renderFilters();
+      renderCards();
+      buildMarquee(tools);
+      showToast(`"${saved.name}" atualizada. O site republica em ~1 min.`, "ok");
     }
 
     async function handleDelete(tool, button) {
@@ -352,6 +578,7 @@
         tools = tools.filter((entry) => !sameTool(entry, tool));
         renderFilters();
         renderCards();
+        buildMarquee(tools);
         showToast(`"${tool.name}" foi removida. O site republica em ~1 min.`, "ok");
       } catch (error) {
         button.disabled = false;
@@ -374,6 +601,7 @@
 
     renderFilters();
     renderCards();
+    buildMarquee(tools);
   }
 
   function fold(value) {
