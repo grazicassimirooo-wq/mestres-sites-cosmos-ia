@@ -1101,3 +1101,60 @@ textarea.token-input { resize: vertical; font-family: "Bricolage Grotesque", san
 #tools-grid:not(.list-view) .card-edit,
 #tools-grid:not(.list-view) .card-delete { padding: 7px; }
 #tools-grid:not(.list-view) .card-actions { flex-wrap: nowrap; gap: 8px; }
+
+/* ── Vídeo explicativo (YouTube) ──────────────────────────────────── */
+.card-video {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 0; border: none; background: none; text-align: left;
+  font: inherit; color: inherit; cursor: pointer;
+}
+.card-video-thumb {
+  position: relative; display: block; width: 100%;
+  aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+}
+.card-video-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-video:hover .card-video-thumb img { transform: scale(1.06); }
+.card-video-play {
+  position: absolute; left: 50%; top: 50%;
+  width: 48px; height: 48px; margin: -24px 0 0 -24px;
+  display: grid; place-items: center; border-radius: 50%;
+  color: #fff; background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card-video-play svg { margin-left: 3px; }
+.card-video:hover .card-video-play, .card-video:focus-visible .card-video-play { transform: scale(1.18); }
+.card-video:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 12px; }
+.card-video-caption { font-size: 0.82rem; line-height: 1.45; color: var(--text-muted); font-style: italic; }
+#tools-grid.list-view .card-video { flex: 0 0 150px; }
+#tools-grid.list-view .card-video-caption { display: none; }
+@media (max-width: 720px) { #tools-grid.list-view .card-video { flex: initial; } }
+
+.video-dialog {
+  border: none; padding: 0; background: transparent; color: var(--text);
+  width: min(880px, calc(100% - 24px)); max-width: none;
+}
+.video-dialog::backdrop { background: rgba(20, 6, 12, 0.78); backdrop-filter: blur(4px); }
+.video-dialog[open] { animation: dialog-in 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.video-box {
+  position: relative; padding: 20px; border-radius: var(--radius);
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.video-title { margin: 0 40px 12px 0; font-size: 1.2rem; }
+.video-frame { aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
+.video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.video-caption { margin: 12px 0 0; color: var(--text-muted); line-height: 1.55; font-size: 0.92rem; }
+.video-caption:empty { display: none; }
+.video-close {
+  position: absolute; top: 12px; right: 12px; width: 34px; height: 34px;
+  border-radius: 50%; border: 1px solid var(--border); background: var(--bg);
+  color: var(--text); font-size: 1.3rem; line-height: 1; cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+}
+.video-close:hover { transform: rotate(90deg); color: var(--accent-strong); }

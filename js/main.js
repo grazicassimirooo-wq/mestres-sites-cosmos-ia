@@ -279,6 +279,7 @@
     });
 
     initViewToggle();
+    initVideoDialog();
     initSiteTexts();
     initMotion();
     initCatalogo();
@@ -450,6 +451,50 @@
     listBtn.addEventListener("click", () => applyView("list"));
   }
 
+  // Aceita watch?v=, youtu.be, /shorts/, /embed/ e /live/. Devolve o id ou "".
+  function youtubeId(url) {
+    try {
+      const u = new URL(String(url || "").trim());
+      const host = u.hostname.replace(/^www\.|^m\./, "");
+      let id = "";
+      if (host === "youtu.be") id = u.pathname.slice(1).split("/")[0];
+      else if (host === "youtube.com" || host === "youtube-nocookie.com") {
+        if (u.pathname === "/watch") id = u.searchParams.get("v") || "";
+        else {
+          const m = u.pathname.match(/^\/(?:shorts|embed|live|v)\/([^/?]+)/);
+          id = m ? m[1] : "";
+        }
+      }
+      return /^[\w-]{11}$/.test(id) ? id : "";
+    } catch {
+      return "";
+    }
+  }
+
+  function openVideo(tool) {
+    const dialog = document.getElementById("video-dialog");
+    const id = youtubeId(tool.video);
+    if (!dialog || !id) return;
+    document.getElementById("video-title").textContent = tool.name;
+    document.getElementById("video-caption").textContent = tool.videoCaption || "";
+    document.getElementById("video-frame").innerHTML =
+      `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Vídeo: ${escapeAttr(tool.name)}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    dialog.showModal();
+  }
+
+  function initVideoDialog() {
+    const dialog = document.getElementById("video-dialog");
+    if (!dialog) return;
+    // fechar descarrega o iframe para o vídeo parar de tocar
+    dialog.addEventListener("close", () => {
+      document.getElementById("video-frame").innerHTML = "";
+    });
+    document.getElementById("video-close").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+
   function pricingClass(pricing) {
     const value = (pricing || "").toLowerCase();
     if (value.includes("grát") || value.includes("grat")) return "badge-pricing-gratis";
@@ -514,6 +559,7 @@
         card.innerHTML = `
           <h3>${escapeHtml(tool.name)}</h3>
           <p>${escapeHtml(tool.description || "")}</p>
+          ${videoBlock(tool)}
           <div class="badge-row">
             <span class="badge badge-category">${escapeHtml(tool.category || "Outros")}</span>
             <span class="badge ${pricingClass(tool.pricing)}">${escapeHtml(tool.pricing || "")}</span>
@@ -536,6 +582,8 @@
             </button>
           </div>
         `;
+        const videoBtn = card.querySelector(".card-video");
+        if (videoBtn) videoBtn.addEventListener("click", () => openVideo(tool));
         card.querySelector(".card-edit").addEventListener("click", () => handleEdit(tool));
         const deleteBtn = card.querySelector(".card-delete");
         deleteBtn.addEventListener("click", () => handleDelete(tool, deleteBtn));
@@ -550,6 +598,9 @@
       if (!readToken() && !(await askForToken())) return;
       const saved = await openEditDialog(dialog, tool, async (values) => {
         if (!values.name || !values.link) throw new Error("nome e link são obrigatórios.");
+        if (values.video && !youtubeId(values.video)) {
+          throw new Error("o link do vídeo precisa ser do YouTube (youtube.com ou youtu.be).");
+        }
         const ok = await withToken(() => editToolInRepo(tool, values));
         if (!ok) throw new Error("token não informado.");
       });
@@ -602,6 +653,21 @@
     renderFilters();
     renderCards();
     buildMarquee(tools);
+  }
+
+  function videoBlock(tool) {
+    const id = youtubeId(tool.video);
+    if (!id) return "";
+    const caption = tool.videoCaption
+      ? `<span class="card-video-caption">${escapeHtml(tool.videoCaption)}</span>` : "";
+    return `
+          <button type="button" class="card-video" aria-label="Assistir ao vídeo sobre ${escapeAttr(tool.name)}">
+            <span class="card-video-thumb">
+              <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy" referrerpolicy="no-referrer">
+              <span class="card-video-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg></span>
+            </span>
+            ${caption}
+          </button>`;
   }
 
   function fold(value) {
